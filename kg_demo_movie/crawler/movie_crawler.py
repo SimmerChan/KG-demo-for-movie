@@ -23,7 +23,7 @@ import re
 import pymysql
 import time
 
-api_key = 'e1257c8c59931e4128400ab6ddf0950e'
+api_key = 'your_api_key'
 person_detail_url = 'https://api.themoviedb.org/3/person/{person_id}?api_key={api_key}&language=zh-cn'
 movie_cast_url = 'https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={api_key}'
 person_movie_detail_url = 'https://api.themoviedb.org/3/person/{person_id}/movie_credits?api_key={api_key}&language=zh-cn'
