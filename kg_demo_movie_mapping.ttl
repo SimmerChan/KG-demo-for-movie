@@ -1,0 +1,127 @@
+@prefix map: <#> .
+@prefix db: <> .
+@prefix vocab: <vocab/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix : <http://www.kgdemo.com#> .
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "com.mysql.jdbc.Driver";
+	d2rq:jdbcDSN "jdbc:mysql:///kg_demo_movie";
+	d2rq:username "root";
+	jdbc:autoReconnect "true";
+	jdbc:zeroDateTimeBehavior "convertToNull";
+	.
+
+# Table genre
+map:genre a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "genre/@@genre.genre_id@@";
+	d2rq:class :Genre;
+	d2rq:classDefinitionLabel "genre";
+	.
+map:genre_genre_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:genre;
+	d2rq:property :genreName;
+	d2rq:propertyDefinitionLabel "genre genre_name";
+	d2rq:column "genre.genre_name";
+	.
+
+# Table movie
+map:movie a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "movie/@@movie.movie_id@@";
+	d2rq:class :Movie;
+	d2rq:classDefinitionLabel "movie";
+	.
+map:movie_movie_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:movie;
+	d2rq:property :movieTitle;
+	d2rq:propertyDefinitionLabel "movie movie_title";
+	d2rq:column "movie.movie_title";
+	.
+map:movie_movie_introduction a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:movie;
+	d2rq:property :movieIntroduction;
+	d2rq:propertyDefinitionLabel "movie movie_introduction";
+	d2rq:column "movie.movie_introduction";
+	.
+map:movie_movie_rating a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:movie;
+	d2rq:property :movieRating;
+	d2rq:propertyDefinitionLabel "movie movie_rating";
+	d2rq:column "movie.movie_rating";
+	d2rq:datatype xsd:double;
+	.
+map:movie_movie_release_date a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:movie;
+	d2rq:property :movieReleaseDate;
+	d2rq:propertyDefinitionLabel "movie movie_release_date";
+	d2rq:column "movie.movie_release_date";
+	.
+
+# Table movie_to_genre (n:m)
+map:movie_to_genre__link a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:movie;
+	d2rq:property :hasGenre;
+	d2rq:refersToClassMap map:genre;
+	d2rq:join "movie_to_genre.movie_id => movie.movie_id";
+	d2rq:join "movie_to_genre.genre_id => genre.genre_id";
+	.
+
+# Table person
+map:person a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "person/@@person.person_id@@";
+	d2rq:class :Person;
+	d2rq:classDefinitionLabel "person";
+	.
+map:person_person_birth_day a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :personBirthDay;
+	d2rq:propertyDefinitionLabel "person person_birth_day";
+	d2rq:column "person.person_birth_day";
+	.
+map:person_person_death_day a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :personDeathDay;
+	d2rq:propertyDefinitionLabel "person person_death_day";
+	d2rq:column "person.person_death_day";
+	.
+map:person_person_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :personName;
+	d2rq:propertyDefinitionLabel "person person_name";
+	d2rq:column "person.person_name";
+	.
+map:person_person_english_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :personEnglishName;
+	d2rq:propertyDefinitionLabel "person person_english_name";
+	d2rq:column "person.person_english_name";
+	.
+map:person_person_biography a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :personBiography;
+	d2rq:propertyDefinitionLabel "person person_biography";
+	d2rq:column "person.person_biography";
+	.
+map:person_person_birth_place a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :personBirthPlace;
+	d2rq:propertyDefinitionLabel "person person_birth_place";
+	d2rq:column "person.person_birth_place";
+	.
+
+# Table person_to_movie (n:m)
+map:person_to_movie__link a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:person;
+	d2rq:property :hasActedIn;
+	d2rq:refersToClassMap map:movie;
+	d2rq:join "person_to_movie.movie_id => movie.movie_id";
+	d2rq:join "person_to_movie.person_id => person.person_id";
+	.
+
