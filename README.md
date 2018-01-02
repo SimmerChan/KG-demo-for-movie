@@ -6,3 +6,9 @@ crawler中的movie_crawler用于从The Movie DB下载数据，用户需要自己
 
 # ontology.owl
 通过protege构建的本体，用户可以直接用protege打开，查看或修改。
+
+# kg\_demo\_movie_mapping.ttl
+根据d2rq mapping language编辑的映射文件，将数据库中的数据映射到我们构建的本体上。
+
+# kg\_demo_movie.nt
+利用d2rq，根据mapping文件，由Mysql数据库转换得到的RDF数据。
