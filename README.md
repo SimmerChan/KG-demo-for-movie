@@ -12,3 +12,9 @@ crawler中的movie_crawler用于从The Movie DB下载数据，用户需要自己
 
 # kg\_demo_movie.nt
 利用d2rq，根据mapping文件，由Mysql数据库转换得到的RDF数据。
+
+# fuseki_conf.ttl
+fuseki server配置文件，指定推理引擎，本体文件路径，规则文件路径，TDB路径等
+
+# rules.ttl
+规则文件，用于基于规则的推理。

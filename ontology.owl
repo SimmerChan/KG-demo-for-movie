@@ -113,6 +113,11 @@
 #    Classes
 #################################################################
 
+###  http://www.kgdemo.com#Comedian
+:Comedian rdf:type owl:Class ;
+          rdfs:subClassOf :Person .
+
+
 ###  http://www.kgdemo.com#Genre
 :Genre rdf:type owl:Class .
 
