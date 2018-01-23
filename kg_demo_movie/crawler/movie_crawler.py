@@ -263,7 +263,7 @@ if __name__ == '__main__':
     mysql_cursor.executemany(insert_movie_genre_command, set(genre_pair_list))
 
     # TODO 提交所有insert操作
-    mysql_cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+    mysql_cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
     mysql_db.commit()
     mysql_cursor.close()
     mysql_db.close()
