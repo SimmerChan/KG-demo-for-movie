@@ -44,5 +44,5 @@ class Question2Sparql:
             return queries_dict.values()[0]
         else:
             # TODO 匹配多个语句，以匹配关键词最多的句子作为返回结果
-            sorted_dict = sorted(queries_dict.iteritems(), key=lambda item: item[1])
+            sorted_dict = sorted(queries_dict.iteritems(), key=lambda item: item[0], reverse=True)
             return sorted_dict[0][1]
