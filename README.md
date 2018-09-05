@@ -1,4 +1,13 @@
 # 上手教程
+## 环境配置
+1. 安装python虚拟环境`virtualenv venv`。
+2. 切换至虚拟环境`source venv/bin/activate`。
+3. 安装依赖`pip install -r requirements.txt`。
+4. 安装jena和fuseki。OS X系统可用brew安装，如下所示。
+    ```bash
+    brew install jena fueseki
+    ```
+
 ## 准备数据
 有两种方法。
 1. 事先将三元组数据导入tdb
