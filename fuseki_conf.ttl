@@ -1,5 +1,6 @@
 @prefix :      <http://base/#> .
 @prefix tdb:   <http://jena.hpl.hp.com/2008/tdb#> .
+@prefix tdb2:  <http://jena.apache.org/2016/tdb#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix ja:    <http://jena.hpl.hp.com/2005/11/Assembler#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
@@ -24,7 +25,7 @@ fuseki:serviceUpload              "upload" .
     ja:baseModel <#tdbGraph> ;
 
     #本体文件的路径
-    ja:content [ja:externalContent <file:///D:/apache%20jena/apache-jena-fuseki-3.5.0/run/databases/ontology.ttl> ] ;
+    # ja:content [ja:externalContent <file:ontology.ttl> ] ;
     
     #关闭OWL推理机
     #ja:reasoner [ja:reasonerURL <http://jena.hpl.hp.com/2003/OWLFBRuleReasoner>] .
@@ -32,13 +33,13 @@ fuseki:serviceUpload              "upload" .
     #开启规则推理机，并指定规则文件路径
     ja:reasoner [
         ja:reasonerURL <http://jena.hpl.hp.com/2003/GenericRuleReasoner> ; 
-        ja:rulesFrom <file:///D:/apache%20jena/apache-jena-fuseki-3.5.0/run/databases/rules.ttl> ; ]
+        ja:rulesFrom <file:rules.ttl> ; ]
     .
 
-<#tdbGraph> rdf:type tdb:GraphTDB ;
-    tdb:dataset <#tdbDataset> ;
+<#tdbGraph> rdf:type tdb2:GraphTDB ;
+    tdb2:dataset <#tdbDataset> ;
     .
 
-<#tdbDataset> rdf:type tdb:DatasetTDB ;
-    tdb:location "D:/apache jena/tdb_for_demo" ;
+<#tdbDataset> rdf:type tdb2:DatasetTDB ;
+    tdb2:location "tdb" ;
     .
