@@ -1,9 +1,10 @@
 # 上手教程
 ## 环境配置
-1. 安装python虚拟环境`virtualenv venv`。
-2. 切换至虚拟环境`source venv/bin/activate`。
-3. 安装依赖`pip install -r requirements.txt`。
-4. 安装jena和fuseki。OS X系统可用brew安装，如下所示。
+1. Python版本为2.7，采用3.0版本请自行修改源码中编码相关代码。
+2. 安装python虚拟环境`virtualenv venv`。
+3. 切换至虚拟环境`source venv/bin/activate`。
+4. 安装依赖`pip install -r requirements.txt`。
+5. 安装jena和fuseki（尽量下载3.7之前的版本，否则会出现配置文件不兼容的情况，也可以自行修改配置文件）。OS X系统可用brew安装，如下所示。
     ```bash
     brew install jena fueseki
     ```
