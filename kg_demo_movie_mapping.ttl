@@ -10,7 +10,7 @@
 
 map:database a d2rq:Database;
 	d2rq:jdbcDriver "com.mysql.jdbc.Driver";
-	d2rq:jdbcDSN "jdbc:mysql:///kg_demo_movie";
+	d2rq:jdbcDSN "jdbc:mysql://localhost:3306/kg_demo_movie?useUnicode=true&characterEncoding=utf8";
 	d2rq:username "root";
 	jdbc:autoReconnect "true";
 	jdbc:zeroDateTimeBehavior "convertToNull";
