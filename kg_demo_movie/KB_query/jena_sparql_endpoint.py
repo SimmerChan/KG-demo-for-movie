@@ -56,17 +56,17 @@ class JenaFuseki:
 
         if query_head is None:
             if query_result is True:
-                print 'Yes'
+                print('Yes')
             else:
-                print 'False'
+                print('False')
             print
         else:
             for h in query_head:
-                print h, ' '*5,
+                print(h, ' '*5,)
             print
             for qr in query_result:
-                for _, value in qr.iteritems():
-                    print value, ' ',
+                for _, value in qr.items():
+                    print(value, ' ',)
                 print
 
     def get_sparql_result_value(self, query_result):
@@ -81,22 +81,24 @@ class JenaFuseki:
         else:
             values = list()
             for qr in query_result:
-                for _, value in qr.iteritems():
+                for _, value in qr.items():
                     values.append(value)
             return values
+
 
 # TODO 用于测试
 if __name__ == '__main__':
     fuseki = JenaFuseki()
     my_query = """
-PREFIX : <http://www.kgdemo.com#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX : <http://www.kgdemo.com#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?x WHERE {
-?s :personName '周星驰'.?s :hasActedIn ?m.?m :movieTitle ?x
-}
-limit 1000
+    SELECT DISTINCT ?x
+    WHERE {
+        ?s :personName '周星驰'.?s :hasActedIn ?m.?m :movieTitle ?x
+    }
+    limit 1000
     """
     result = fuseki.get_sparql_result(my_query)
     fuseki.print_result_to_string(result)

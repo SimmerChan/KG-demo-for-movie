@@ -37,19 +37,19 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 """
 
 SPARQL_SELECT_TEM = u"{prefix}\n" + \
-             u"SELECT DISTINCT {select} WHERE {{\n" + \
-             u"{expression}\n" + \
-             u"}}\n"
+    u"SELECT DISTINCT {select} WHERE {{\n" + \
+    u"{expression}\n" + \
+    u"}}\n"
 
 SPARQL_COUNT_TEM = u"{prefix}\n" + \
-             u"SELECT COUNT({select}) WHERE {{\n" + \
-             u"{expression}\n" + \
-             u"}}\n"
+    u"SELECT COUNT({select}) WHERE {{\n" + \
+    u"{expression}\n" + \
+    u"}}\n"
 
 SPARQL_ASK_TEM = u"{prefix}\n" + \
-             u"ASK {{\n" + \
-             u"{expression}\n" + \
-             u"}}\n"
+    u"ASK {{\n" + \
+    u"{expression}\n" + \
+    u"}}\n"
 
 
 class W(Predicate):
@@ -115,7 +115,7 @@ class QuestionSet:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
                     u"?s :hasActedIn ?m." \
-                    u"?m :movieTitle ?x".format(person=w.token.decode('utf-8'))
+                    u"?m :movieTitle ?x".format(person=w.token)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -137,7 +137,7 @@ class QuestionSet:
             if w.pos == pos_movie:
                 e = u"?m :movieTitle '{movie}'." \
                     u"?m :hasActor ?a." \
-                    u"?a :personName ?x".format(movie=w.token.decode('utf-8'))
+                    u"?a :personName ?x".format(movie=w.token)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -169,11 +169,11 @@ class QuestionSet:
                 u"?p2 :personName '{person2}'." \
                 u"?p1 :hasActedIn ?m." \
                 u"?p2 :hasActedIn ?m." \
-                u"?m :movieTitle ?x".format(person1=person1.decode('utf-8'), person2=person2.decode('utf-8'))
+                u"?m :movieTitle ?x".format(person1=person1, person2=person2)
 
             return SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
-                                          select=select,
-                                          expression=e)
+                                            select=select,
+                                            expression=e)
         else:
             return None
 
@@ -208,7 +208,7 @@ class QuestionSet:
                 u"?p :hasActedIn ?m." \
                 u"?m :movieTitle ?x." \
                 u"?m :movieRating ?r." \
-                u"filter(?r {mark} {number})".format(person=person.decode('utf-8'), number=number.decode('utf-8'),
+                u"filter(?r {mark} {number})".format(person=person, number=number,
                                                      mark=keyword)
 
             return SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
@@ -232,7 +232,7 @@ class QuestionSet:
                 e = u"?s :personName '{person}'." \
                     u"?s :hasActedIn ?m." \
                     u"?m :hasGenre ?g." \
-                    u"?g :genreName ?x".format(person=w.token.decode('utf-8'))
+                    u"?g :genreName ?x".format(person=w.token)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -263,7 +263,8 @@ class QuestionSet:
                     u"?s :hasActedIn ?m." \
                     u"?m :hasGenre ?g." \
                     u"?g :genreName '{keyword}'." \
-                    u"?m :movieTitle ?x".format(person=w.token.decode('utf-8'), keyword=keyword)
+                    u"?m :movieTitle ?x".format(
+                        person=w.token, keyword=keyword)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -284,9 +285,10 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
-                    u"?s :hasActedIn ?x.".format(person=w.token.decode('utf-8'))
+                    u"?s :hasActedIn ?x.".format(person=w.token)
 
-                sparql = SPARQL_COUNT_TEM.format(prefix=SPARQL_PREXIX, select=select, expression=e)
+                sparql = SPARQL_COUNT_TEM.format(
+                    prefix=SPARQL_PREXIX, select=select, expression=e)
                 break
 
         return sparql
@@ -302,9 +304,10 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
-                    u"?s rdf:type :Comedian.".format(person=w.token.decode('utf-8'))
+                    u"?s rdf:type :Comedian.".format(person=w.token)
 
-                sparql = SPARQL_ASK_TEM.format(prefix=SPARQL_PREXIX, expression=e)
+                sparql = SPARQL_ASK_TEM.format(
+                    prefix=SPARQL_PREXIX, expression=e)
                 break
 
         return sparql
@@ -328,9 +331,10 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
-                    u"?s {keyword} ?x.".format(person=w.token.decode('utf-8'), keyword=keyword)
+                    u"?s {keyword} ?x.".format(person=w.token, keyword=keyword)
 
-                sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX, select=select, expression=e)
+                sparql = SPARQL_SELECT_TEM.format(
+                    prefix=SPARQL_PREXIX, select=select, expression=e)
 
                 break
 
@@ -355,9 +359,10 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_movie:
                 e = u"?s :movieTitle '{movie}'." \
-                    u"?s {keyword} ?x.".format(movie=w.token.decode('utf-8'), keyword=keyword)
+                    u"?s {keyword} ?x.".format(movie=w.token, keyword=keyword)
 
-                sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX, select=select, expression=e)
+                sparql = SPARQL_SELECT_TEM.format(
+                    prefix=SPARQL_PREXIX, select=select, expression=e)
 
                 break
 
@@ -551,55 +556,93 @@ where = (W("哪里") | W("哪儿") | W("何地") | W("何处") | W("在") + W("�
 10. 某电影的简介/上映日期/评分
 """
 rules = [
-    Rule(condition_num=2, condition=person_entity + Star(Any(), greedy=False) + movie + Star(Any(), greedy=False), action=QuestionSet.has_movie_question),
-    Rule(condition_num=2, condition=(movie_entity + Star(Any(), greedy=False) + actor + Star(Any(), greedy=False)) | (actor + Star(Any(), greedy=False) + movie_entity + Star(Any(), greedy=False)), action=QuestionSet.has_actor_question),
-    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + person_entity + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=QuestionSet.has_cooperation_question),
-    Rule(condition_num=4, condition=person_entity + Star(Any(), greedy=False) + compare + number_entity + Star(Any(), greedy=False) + movie + Star(Any(), greedy=False), action=QuestionSet.has_compare_question),
-    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + category + Star(Any(), greedy=False) + movie, action=QuestionSet.has_movie_type_question),
-    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + genre + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=QuestionSet.has_specific_type_movie_question),
-    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + several + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=QuestionSet.has_quantity_question),
-    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + comedy + actor + Star(Any(), greedy=False), action=QuestionSet.is_comedian_question),
-    Rule(condition_num=3, condition=(person_entity + Star(Any(), greedy=False) + (when | where) + person_basic + Star(Any(), greedy=False)) | (person_entity + Star(Any(), greedy=False) + person_basic + Star(Any(), greedy=False)), action=QuestionSet.has_basic_person_info_question),
-    Rule(condition_num=2, condition=movie_entity + Star(Any(), greedy=False) + movie_basic + Star(Any(), greedy=False), action=QuestionSet.has_basic_movie_info_question)
+    Rule(condition_num=2, condition=person_entity + Star(Any(), greedy=False) +
+         movie + Star(Any(), greedy=False), action=QuestionSet.has_movie_question),
+    Rule(condition_num=2, condition=(movie_entity + Star(Any(), greedy=False) + actor + Star(Any(), greedy=False)) |
+         (actor + Star(Any(), greedy=False) + movie_entity + Star(Any(), greedy=False)), action=QuestionSet.has_actor_question),
+    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + person_entity + Star(Any(),
+                                                                                                     greedy=False) + (movie | Star(Any(), greedy=False)), action=QuestionSet.has_cooperation_question),
+    Rule(condition_num=4, condition=person_entity + Star(Any(), greedy=False) + compare + number_entity +
+         Star(Any(), greedy=False) + movie + Star(Any(), greedy=False), action=QuestionSet.has_compare_question),
+    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + category +
+         Star(Any(), greedy=False) + movie, action=QuestionSet.has_movie_type_question),
+    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + genre + Star(Any(),
+                                                                                             greedy=False) + (movie | Star(Any(), greedy=False)), action=QuestionSet.has_specific_type_movie_question),
+    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + several + Star(Any(),
+                                                                                               greedy=False) + (movie | Star(Any(), greedy=False)), action=QuestionSet.has_quantity_question),
+    Rule(condition_num=3, condition=person_entity + Star(Any(), greedy=False) + comedy +
+         actor + Star(Any(), greedy=False), action=QuestionSet.is_comedian_question),
+    Rule(condition_num=3, condition=(person_entity + Star(Any(), greedy=False) + (when | where) + person_basic + Star(Any(), greedy=False)) |
+         (person_entity + Star(Any(), greedy=False) + person_basic + Star(Any(), greedy=False)), action=QuestionSet.has_basic_person_info_question),
+    Rule(condition_num=2, condition=movie_entity + Star(Any(), greedy=False) + movie_basic +
+         Star(Any(), greedy=False), action=QuestionSet.has_basic_movie_info_question)
 ]
 
 # TODO 具体的属性词匹配规则
 genre_keyword_rules = [
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + adventure + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_adventure_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + fantasy + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_fantasy_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + animation + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_animation_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + drama + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_drama_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + thriller + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_thriller_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + action + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_action_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + comedy + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_comedy_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + history + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_history_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + western + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_western_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + horror + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_horror_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + crime + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_crime_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + documentary + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_documentary_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + science_fiction + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_fiction_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + mystery + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_mystery_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + music + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_music_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + romance + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_romance_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + family + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_family_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + war + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_war_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + TV + Star(Any(), greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_tv_value)
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + adventure + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_adventure_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + fantasy + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_fantasy_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + animation + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_animation_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + drama + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_drama_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + thriller + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_thriller_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + action + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_action_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + comedy + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_comedy_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + history + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_history_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + western + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_western_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + horror + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_horror_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + crime + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_crime_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + documentary + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_documentary_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + science_fiction + Star(Any(),
+                                                                                             greedy=False) + (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_fiction_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + mystery + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_mystery_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + music + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_music_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + romance + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_romance_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + family + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_family_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + war + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_war_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + TV + Star(Any(), greedy=False) +
+                (movie | Star(Any(), greedy=False)), action=PropertyValueSet.return_tv_value)
 ]
 
 compare_keyword_rules = [
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + higher + number_entity + Star(Any(), greedy=False) + movie + Star(Any(), greedy=False), action=PropertyValueSet.return_higher_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + lower + number_entity + Star(Any(), greedy=False) + movie + Star(Any(), greedy=False), action=PropertyValueSet.return_lower_value)
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + higher + number_entity + Star(Any(),
+                                                                                                    greedy=False) + movie + Star(Any(), greedy=False), action=PropertyValueSet.return_higher_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + lower + number_entity + Star(Any(),
+                                                                                                   greedy=False) + movie + Star(Any(), greedy=False), action=PropertyValueSet.return_lower_value)
 ]
 
 person_basic_keyword_rules = [
-    KeywordRule(condition=(person_entity + Star(Any(), greedy=False) + where + birth_place + Star(Any(), greedy=False)) | (person_entity + Star(Any(), greedy=False) + birth_place + Star(Any(), greedy=False)), action=PropertyValueSet.return_birth_place_value),
-    KeywordRule(condition=person_entity + Star(Disjunction(Any(), where), greedy=False) + birth + Star(Any(), greedy=False), action=PropertyValueSet.return_birth_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + english_name + Star(Any(), greedy=False), action=PropertyValueSet.return_english_name_value),
-    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + introduction + Star(Any(), greedy=False), action=PropertyValueSet.return_person_introduction_value)
+    KeywordRule(condition=(person_entity + Star(Any(), greedy=False) + where + birth_place + Star(Any(), greedy=False)) | (person_entity +
+                                                                                                                           Star(Any(), greedy=False) + birth_place + Star(Any(), greedy=False)), action=PropertyValueSet.return_birth_place_value),
+    KeywordRule(condition=person_entity + Star(Disjunction(Any(), where), greedy=False) +
+                birth + Star(Any(), greedy=False), action=PropertyValueSet.return_birth_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + english_name +
+                Star(Any(), greedy=False), action=PropertyValueSet.return_english_name_value),
+    KeywordRule(condition=person_entity + Star(Any(), greedy=False) + introduction +
+                Star(Any(), greedy=False), action=PropertyValueSet.return_person_introduction_value)
 ]
 
 movie_basic_keyword_rules = [
-    KeywordRule(condition=movie_entity + Star(Any(), greedy=False) + introduction + Star(Any(), greedy=False), action=PropertyValueSet.return_movie_introduction_value),
-    KeywordRule(condition=movie_entity + Star(Any(), greedy=False) + release + Star(Any(), greedy=False), action=PropertyValueSet.return_release_value),
-    KeywordRule(condition=movie_entity + Star(Any(), greedy=False) + rating + Star(Any(), greedy=False), action=PropertyValueSet.return_rating_value),
+    KeywordRule(condition=movie_entity + Star(Any(), greedy=False) + introduction +
+                Star(Any(), greedy=False), action=PropertyValueSet.return_movie_introduction_value),
+    KeywordRule(condition=movie_entity + Star(Any(), greedy=False) + release +
+                Star(Any(), greedy=False), action=PropertyValueSet.return_release_value),
+    KeywordRule(condition=movie_entity + Star(Any(), greedy=False) + rating +
+                Star(Any(), greedy=False), action=PropertyValueSet.return_rating_value),
 ]
