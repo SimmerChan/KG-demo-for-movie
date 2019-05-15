@@ -6,7 +6,7 @@
 4. 安装依赖`pip install -r requirements.txt`。
 5. 安装jena和fuseki（尽量下载3.7之前的版本，否则会出现配置文件不兼容的情况，也可以自行修改配置文件）。OS X系统可用brew安装，如下所示。
     ```bash
-    brew install jena fueseki
+    brew install jena fuseki
     ```
 
 ## 准备数据
