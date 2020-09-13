@@ -115,7 +115,7 @@ class QuestionSet:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
                     u"?s :hasActedIn ?m." \
-                    u"?m :movieTitle ?x".format(person=w.token.decode('utf-8'))
+                    u"?m :movieTitle ?x".format(person=w.token)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -137,7 +137,7 @@ class QuestionSet:
             if w.pos == pos_movie:
                 e = u"?m :movieTitle '{movie}'." \
                     u"?m :hasActor ?a." \
-                    u"?a :personName ?x".format(movie=w.token.decode('utf-8'))
+                    u"?a :personName ?x".format(movie=w.token)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -169,7 +169,7 @@ class QuestionSet:
                 u"?p2 :personName '{person2}'." \
                 u"?p1 :hasActedIn ?m." \
                 u"?p2 :hasActedIn ?m." \
-                u"?m :movieTitle ?x".format(person1=person1.decode('utf-8'), person2=person2.decode('utf-8'))
+                u"?m :movieTitle ?x".format(person1=person1, person2=person2)
 
             return SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                           select=select,
@@ -208,7 +208,7 @@ class QuestionSet:
                 u"?p :hasActedIn ?m." \
                 u"?m :movieTitle ?x." \
                 u"?m :movieRating ?r." \
-                u"filter(?r {mark} {number})".format(person=person.decode('utf-8'), number=number.decode('utf-8'),
+                u"filter(?r {mark} {number})".format(person=person, number=number,
                                                      mark=keyword)
 
             return SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
@@ -232,7 +232,7 @@ class QuestionSet:
                 e = u"?s :personName '{person}'." \
                     u"?s :hasActedIn ?m." \
                     u"?m :hasGenre ?g." \
-                    u"?g :genreName ?x".format(person=w.token.decode('utf-8'))
+                    u"?g :genreName ?x".format(person=w.token)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -263,7 +263,7 @@ class QuestionSet:
                     u"?s :hasActedIn ?m." \
                     u"?m :hasGenre ?g." \
                     u"?g :genreName '{keyword}'." \
-                    u"?m :movieTitle ?x".format(person=w.token.decode('utf-8'), keyword=keyword)
+                    u"?m :movieTitle ?x".format(person=w.token, keyword=keyword)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX,
                                                   select=select,
@@ -284,7 +284,7 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
-                    u"?s :hasActedIn ?x.".format(person=w.token.decode('utf-8'))
+                    u"?s :hasActedIn ?x.".format(person=w.token)
 
                 sparql = SPARQL_COUNT_TEM.format(prefix=SPARQL_PREXIX, select=select, expression=e)
                 break
@@ -302,7 +302,7 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
-                    u"?s rdf:type :Comedian.".format(person=w.token.decode('utf-8'))
+                    u"?s rdf:type :Comedian.".format(person=w.token)
 
                 sparql = SPARQL_ASK_TEM.format(prefix=SPARQL_PREXIX, expression=e)
                 break
@@ -328,7 +328,7 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_person:
                 e = u"?s :personName '{person}'." \
-                    u"?s {keyword} ?x.".format(person=w.token.decode('utf-8'), keyword=keyword)
+                    u"?s {keyword} ?x.".format(person=w.token, keyword=keyword)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX, select=select, expression=e)
 
@@ -355,7 +355,7 @@ class QuestionSet:
         for w in word_objects:
             if w.pos == pos_movie:
                 e = u"?s :movieTitle '{movie}'." \
-                    u"?s {keyword} ?x.".format(movie=w.token.decode('utf-8'), keyword=keyword)
+                    u"?s {keyword} ?x.".format(movie=w.token, keyword=keyword)
 
                 sparql = SPARQL_SELECT_TEM.format(prefix=SPARQL_PREXIX, select=select, expression=e)
 

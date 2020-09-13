@@ -1,47 +1,77 @@
 # 上手教程
 如果对相关概念不是很了解，建议可以先看看该代码配套的[知乎专栏](https://zhuanlan.zhihu.com/knowledgegraph)系列文章。
 
-## 环境配置
-1. Python版本为2.7，采用3.0版本请自行修改源码中编码相关代码。
-2. 安装python虚拟环境`virtualenv venv`。
-3. 切换至虚拟环境`source venv/bin/activate`。
-4. 安装依赖`pip install -r requirements.txt`。
-5. 安装jena和fuseki（尽量下载3.7之前的版本，否则会出现配置文件不兼容的情况，也可以自行修改配置文件）。OS X系统可用brew安装，如下所示。
-    ```bash
-    brew install jena fuseki
-    ```
+# Demo效果
 
-## 准备数据
-有两种方法。
-1. 事先将三元组数据导入tdb
-    ```bash
-    tdbloader --loc tdb kg_demo_movie.nt
-    ```
+![image](demo.jpg)
 
-2. 略过此步。等服务器启动后在[管理后台](localhost:3030)上传数据。
+# 环境配置
+1. Python版本为3.6
+2. 安装依赖`pip install -r requirements.txt`。
+3. jena版本为3.5.0，已经上传在该repo中（如果不用Docker运行demo，需要自己修改配置文件中的路径）。
+4. d2rq使用的0.8.1
 
-## 运行服务器
-```bash
-fuseki-server --config fuseki_conf.ttl
+# 运行方式
+
+这里提供两种运行demo的方式：
+1. 直接构建docker镜像，部署容器服务。推荐这种方式，已经把各种环境配置好了。只需要安装docker，构建镜像。
+2. 直接在本地运行。需要自行修改配置文件（jena/apache-jena-fuseki-3.5.0/run/configuration/fuseki_conf.ttl配置文件中的路径）
+
+## 构建docker镜像
+
+进入项目根目录
+
+```shell script
+docker build -t kbqa:V0.1 .
+docker run -p 80:80
+```
+打开浏览器，输入localhost，即能看到demo界面。
+
+## 本地运行
+
+其实就是把Dockerfile里面的命令直接在本地环境运行（记得修改configuration/fuseki_conf.ttl中的文件路径）。
+
+第一步：安装依赖库
+```shell script
+pip3.6 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 ```
 
-## 问题集锦
-1. 启动服务器时报以下错误
-    ```code
-    #model_inf was aborted because of NodeTableThrift/Write
-    ```
-    #### 推测原因
-    InfModel里baseModel和content属性两者不兼容。
-    ```code
-    <#model_inf> a ja:InfModel ;
-        ja:baseModel <#tdbGraph> ;
-        # ja:content
-    ```
-   #### 解决
-   注释掉其中的一项。例如，将content注释掉，等服务器启动后，再上传本体文件。
+第二步：将nt格式的三元组数据以tdb进行存储（怎么得到kg_demo_movie.nt文件请参考[实践篇二](https://mp.weixin.qq.com/s/3sYSv4-BPU3wDyZWCzeUMg)）。
+```shell script
+/kbqa/jena/apache-jena-3.5.0/bin/tdbloader --loc="path_of_tdb" "path_of_kg_demo_movie.nt" # 自行指定tdb的路径，记得和configuration/fuseki_conf.ttl中一致
+```
+
+window环境是使用/kbqa/jena/apache-jena-3.5.0/bat/tdbloader.bat
+
+第三步：设置环境变量（windows如何设置请自行查询；也可以不设置streamlit端口，使用默认端口，第五步启动后会提示服务的端口）
+
+```shell script
+export LANG=C.UTF-8 LC_ALL=C.UTF-8 STREAMLIT_SERVER_PORT=80 FUSEKI_HOME=/kbqa/jena/apache-jena-fuseki-3.5.0
+```
+
+第四步：运行fuseki（进入apache-jena-fuseki-3.5.0子目录，windows运行fuseki-server.bat）
+
+```shell script
+./fuseki-server
+```
+
+第五步：运行web服务。
+
+```shell script
+streamlit run streamlit_app.py --server.enableCORS=true
+```
+
+打开浏览器，输入指定的地址即可。
+
+
+# 问题集锦
+
+1. fuseki-server服务启动后，关闭重启会报错。这是jena的一个bug，把tdb中的文件删了，重新用tdbloader命令生成一次即可。
 
 # 目录结构
+
 ## Data文件夹
+
 包含ER图模型文件和创建数据库、表，插入所有数据的sql文件。用户可以直接使用sql文件导入数据到mysql中。
 
 ## kg\_demo_movie文件夹
@@ -69,9 +99,12 @@ fuseki server配置文件，指定推理引擎，本体文件路径，规则文�
 ## rules.ttl
 规则文件，用于基于规则的推理。
 
+## streamlit_app.py
+web demo文件，基于streamlit库。
+
 # 兴趣群
 
-~~建了一个QQ群，给大家提供一个交流的渠道。~~   （可能大家平时不怎么用QQ，我现在也基本弃用QQ）。我创建了微信群，给大家提供一个交流的渠道。由于各种原因，我可能无法及时回答大家的问题；同时，个人的力量是渺小的，我对各位遇到的问题也不一定都了解，因此希望大家通过这个群能解决自己遇到的问题。群主题不局限于KG，也包括NLP的一些话题。另外，微信进群二维码在一段时间后会失效，为了方便大家进群，我用公众号定时更新群二维码。公众号也会提供一些相关的资源和学习材料。
+我创建了微信群，给大家提供一个交流的渠道。由于各种原因，我可能无法及时回答大家的问题；同时，个人的力量是渺小的，我对各位遇到的问题也不一定都了解，因此希望大家通过这个群能解决自己遇到的问题。群主题不局限于KG，也包括NLP的一些话题。公众号也会提供一些相关的资源和学习材料。
 
 公众号：尘世美小茶馆（simmer_teahouse）
 
