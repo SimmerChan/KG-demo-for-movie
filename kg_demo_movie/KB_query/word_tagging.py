@@ -45,12 +45,13 @@ class Tagger:
         :param sentence:
         :return:
         """
-        return [Word(word.encode('utf-8'), tag) for word, tag in pseg.cut(sentence)]
+        return [Word(word, tag) for word, tag in pseg.cut(sentence)]
+
 
 # TODO 用于测试
 if __name__ == '__main__':
     tagger = Tagger(['./external_dict/movie_title.txt', './external_dict/person_name.txt'])
     while True:
-        s = raw_input()
+        s = input('>>')
         for i in tagger.get_word_objects(s):
-            print i.token, i.pos
+            print(i.token, i.pos)

@@ -267,9 +267,7 @@ def run():
 
     c = Converter(options.encoding)
     for line in file_in:
-        # print >> file_out, c.convert(line.rstrip('\n').decode(
-        file_out.write(c.convert(line.rstrip('\n').decode(
-            'utf8')).encode('utf8'))
+        file_out.write(c.convert(line.rstrip('\n')))
 
 
 if __name__ == '__main__':
