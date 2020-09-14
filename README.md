@@ -108,3 +108,6 @@ web demo文件，基于streamlit库。
 
 公众号：尘世美小茶馆（simmer_teahouse）
 
+![image](wechat.jpg)
+
+
