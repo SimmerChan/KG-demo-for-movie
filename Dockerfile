@@ -11,13 +11,17 @@ RUN apt-get -y install python3.6
 RUN apt-get -y install python3.6-dev
 RUN apt-get -y install default-jdk
 
-ADD . /kbqa
+COPY . /kbqa
 WORKDIR /kbqa
+RUN ls -la /kbqa/*
 
 RUN /usr/bin/python3.6 get-pip.py
+# Setuptools >= 58 会报错，必须用 v57的 setuptools
+RUN /usr/local/bin/pip3.6 uninstall -y setuptools
+RUN /usr/local/bin/pip3.6 install setuptools==57.5.0
 RUN /usr/local/bin/pip3.6 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/ && rm -rf ~/.cache/pip
 
-RUN /kbqa/jena/apache-jena-3.5.0/bin/tdbloader --loc="/kbqa/jena/tdb" "/kbqa/kg_demo_movie.nt"
+# RUN /kbqa/jena/apache-jena-3.5.0/bin/tdbloader --loc="/kbqa/jena/tdb" "/kbqa/kg_demo_movie.nt"
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 STREAMLIT_SERVER_PORT=80 FUSEKI_HOME=/kbqa/jena/apache-jena-fuseki-3.5.0
 

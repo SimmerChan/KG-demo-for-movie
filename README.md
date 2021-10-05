@@ -8,7 +8,7 @@
 # 环境配置
 1. Python版本为3.6
 2. 安装依赖`pip install -r requirements.txt`。
-3. jena版本为3.5.0，已经上传在该repo中（如果不用Docker运行demo，需要自己修改配置文件中的路径）。
+3. jena版本为4.2.0，已经上传在该repo中（如果不用Docker运行demo，需要自己修改配置文件中的路径）。
 4. d2rq使用的0.8.1
 
 # 运行方式
@@ -38,10 +38,10 @@ pip3.6 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 
 第二步：将nt格式的三元组数据以tdb进行存储（怎么得到kg_demo_movie.nt文件请参考[实践篇二](https://mp.weixin.qq.com/s/3sYSv4-BPU3wDyZWCzeUMg)）。
 ```shell script
-/kbqa/jena/apache-jena-3.5.0/bin/tdbloader --loc="path_of_tdb" "path_of_kg_demo_movie.nt" # 自行指定tdb的路径，记得和configuration/fuseki_conf.ttl中一致
+/kbqa/jena/apache-jena-4.2.0/bin/tdbloader --loc="path_of_tdb" "path_of_kg_demo_movie.nt" # 自行指定tdb的路径，记得和configuration/fuseki_conf.ttl中一致
 ```
 
-window环境是使用/kbqa/jena/apache-jena-3.5.0/bat/tdbloader.bat
+Windows 环境是使用/kbqa/jena/apache-jena-4.2.0/bat/tdbloader.bat
 
 第三步：设置环境变量（windows如何设置请自行查询；也可以不设置streamlit端口，使用默认端口，第五步启动后会提示服务的端口）
 
@@ -110,4 +110,11 @@ web demo文件，基于streamlit库。
 
 ![image](wechat.jpg)
 
+<Edwin> 2021-10-05 升级Jena到最新版本 4.2.0；Dockerfile 很多软件太老旧了，都升级了；
+Python 3.6不能改，改成3.9之后安装报错
+无语了，Docker跑不起来，算了，Docker也可以扔掉，Windows本地启动Fuseki，这个人做的东西就是一坨屎
+现在估计直接 Windows 启动会有问题，可以在 Linux 虚拟机里边跑
 
+<Edwin> 现在用原版的 Dockerfile 也是这个错："error in REfO setup command: use_2to3 is invalid."
+所以还是要彻底解决这个问题，要指定 setuptools<58 ;
+我去，这个人是刚开始学代码么？为什么用绝对路径，就是用当前目录的路径，我的天~~~

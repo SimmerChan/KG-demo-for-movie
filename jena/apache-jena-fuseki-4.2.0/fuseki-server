@@ -1,0 +1,122 @@
+#!/bin/sh
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Run fuseki as a standalone server
+# Determine where this script resides. Start by assuming it was the path invoked.
+THIS_SCRIPT="$0"
+
+# Handle resolving symlinks to this script on BSD or GNU systems by avoiding readlink.
+while [ -h "$THIS_SCRIPT" ] ; do
+  ls=`ls -ld "$THIS_SCRIPT"`
+  # Drop everything prior to ->
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    THIS_SCRIPT="$link"
+  else
+    THIS_SCRIPT=`dirname "$THIS_SCRIPT"`/"$link"
+  fi
+done
+
+# Get path to the scripts directory.
+SCRIPT_DIR=$(dirname "${THIS_SCRIPT}")
+
+# Unless FUSEKI_HOME is set, assume it is the dir the script is in.
+export FUSEKI_HOME="${FUSEKI_HOME:-$SCRIPT_DIR}"
+
+if [ ! -e "$FUSEKI_HOME" ]
+then
+    echo "$FUSEKI_HOME does not exist" 1>&2
+    exit 1
+    fi
+
+JAR1="$FUSEKI_HOME/fuseki-server.jar"
+JAR2="$FUSEKI_HOME/jena-fuseki-server-*.jar"
+JAR=""
+
+for J in "$JAR1" "$JAR2"
+do
+    # Expand
+    J="$(echo $J)"
+    if [ -e "$J" ]
+    then
+	JAR="$J"
+	break
+    fi
+done
+
+if [ "$JAR" = "" ]
+then
+    echo "Can't find jarfile to run"
+    exit 1
+fi
+
+# Deal with Cygwin path issues
+cygwin=false
+case "`uname`" in
+    CYGWIN*) cygwin=true;;
+esac
+if [ "$cygwin" = "true" ]
+then
+    JAR=`cygpath -w "$JAR"`
+    FUSEKI_HOME=`cygpath -w "$FUSEKI_HOME"`
+fi
+
+export FUSEKI_BASE="${FUSEKI_BASE:-$PWD/run}"
+
+if [ -z "$JAVA" ]
+then
+    if [ -z "$JAVA_HOME" ]
+    then
+       JAVA=$(which java)
+    else
+        JAVA=$JAVA_HOME/bin/java
+    fi
+fi
+
+if [ -z "$JAVA" ]
+then
+    (
+	echo "Cannot find a Java JDK."
+	echo "Please set either set JAVA or JAVA_HOME and put java (>=1.8) in your PATH."
+    ) 1>&2
+  exit 1
+fi
+
+CP=$JAR
+if [ -d "$FUSEKI_BASE/extra" ]
+then
+   CP="${CP}:${FUSEKI_BASE}/extra/*" 
+fi
+
+JVM_ARGS=${JVM_ARGS:--Xmx4G}
+
+exec $JAVA $JVM_ARGS -cp "$CP" org.apache.jena.fuseki.cmd.FusekiCmd "$@"
+
+## Adding custom code to the Fuseki server:
+##
+## The recommended way to add custom jars to the Fuseki server is to create an
+## "extra" directory under FUSEKI_BASE and place any jars in there. 
+##
+## It is also possible to add more jars to the CP environment variable before 
+## the exec call:
+##
+##   CP="${CP}:MyCode.jar
+## 
+## "exec" is optional - it simply frees up an OS process.
+## In this way, you can add custom java to the classpath:
+## 
+
