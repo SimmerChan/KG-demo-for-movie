@@ -10,7 +10,6 @@ RUN apt-get update
 RUN apt-get -y install python3.6
 RUN apt-get -y install python3.6-dev
 RUN apt-get -y install default-jdk
-# RUN apt-get -y install openjdk-15-jdk
 
 COPY . /kbqa
 WORKDIR /kbqa
