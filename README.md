@@ -6,7 +6,7 @@
 ![image](demo.jpg)
 
 # 环境配置
-1. Python版本为3.6
+1. Python版本为3.9
 2. 安装依赖`pip install -r requirements.txt`。
 3. jena版本为4.2.0，已经上传在该repo中（如果不用Docker运行demo，需要自己修改配置文件中的路径）。
 4. d2rq使用的0.8.1
@@ -19,11 +19,16 @@
 
 ## 构建docker镜像
 
-进入项目根目录
+进入项目根目录，运行以下命令构建Docker Image，推荐在 Linux 下运行
 
 ```shell script
-docker build -t kbqa:V0.1 .
-docker run -p 80:80
+docker build -t kbqa:1.0.0 .
+```
+
+运行镜像
+
+```shell script
+docker run -p 80:80 kbqa:1.0.0
 ```
 打开浏览器，输入localhost，即能看到demo界面。
 
@@ -110,11 +115,11 @@ web demo文件，基于streamlit库。
 
 ![image](wechat.jpg)
 
-<Edwin> 2021-10-05 升级Jena到最新版本 4.2.0；Dockerfile 很多软件太老旧了，都升级了；
-Python 3.6不能改，改成3.9之后安装报错
-无语了，Docker跑不起来，算了，Docker也可以扔掉，Windows本地启动Fuseki，这个人做的东西就是一坨屎
-现在估计直接 Windows 启动会有问题，可以在 Linux 虚拟机里边跑
+<Edwin> 2021-10-05 升级Jena到最新版本 4.2.0，并使用 TDB 2；
 
-<Edwin> 现在用原版的 Dockerfile 也是这个错："error in REfO setup command: use_2to3 is invalid."
-所以还是要彻底解决这个问题，要指定 setuptools<58 ;
-我去，这个人是刚开始学代码么？为什么用绝对路径，就是用当前目录的路径，我的天~~~
+升级Ubuntu 到 20.04；
+
+升级 JDK 到 OpenJDK 11；
+
+升级 Python 到 3.9；
+
