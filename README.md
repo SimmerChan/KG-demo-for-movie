@@ -7,15 +7,15 @@
 
 # 环境配置
 1. Python版本为3.9
-2. 安装依赖`pip install -r requirements.txt`。
-3. jena版本为4.2.0，已经上传在该repo中（如果不用Docker运行demo，需要自己修改配置文件中的路径）。
+2. 安装依赖`pip install -r requirements.txt`
+3. Jena版本为4.2.0，已经上传在该repo中（如果不用Docker运行demo，需要自己修改配置文件中的路径）
 4. d2rq使用的0.8.1
 
 # 运行方式
 
 这里提供两种运行demo的方式：
-1. 直接构建docker镜像，部署容器服务。推荐这种方式，已经把各种环境配置好了。只需要安装docker，构建镜像。
-2. 直接在本地运行。需要自行修改配置文件（jena/apache-jena-fuseki-3.5.0/run/configuration/fuseki_conf.ttl配置文件中的路径）
+1. 直接构建Docker镜像，部署容器服务。推荐这种方式，已经把各种环境配置好了。只需要安装docker，构建镜像。
+2. 直接在本地运行。需要自行修改配置文件（jena/apache-jena-fuseki-4.2.0/run/configuration/fuseki_conf.ttl配置文件中的路径）
 
 ## 构建docker镜像
 
@@ -38,7 +38,7 @@ docker run -p 80:80 kbqa:1.0.0
 
 第一步：安装依赖库
 ```shell script
-pip3.6 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip3.9 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 ```
 
 第二步：将nt格式的三元组数据以tdb进行存储（怎么得到kg_demo_movie.nt文件请参考[实践篇二](https://mp.weixin.qq.com/s/3sYSv4-BPU3wDyZWCzeUMg)）。
@@ -51,10 +51,10 @@ Windows 环境是使用/kbqa/jena/apache-jena-4.2.0/bat/tdbloader.bat
 第三步：设置环境变量（windows如何设置请自行查询；也可以不设置streamlit端口，使用默认端口，第五步启动后会提示服务的端口）
 
 ```shell script
-export LANG=C.UTF-8 LC_ALL=C.UTF-8 STREAMLIT_SERVER_PORT=80 FUSEKI_HOME=/kbqa/jena/apache-jena-fuseki-3.5.0
+export LANG=C.UTF-8 LC_ALL=C.UTF-8 STREAMLIT_SERVER_PORT=80 FUSEKI_HOME=/kbqa/jena/apache-jena-fuseki-4.2.0
 ```
 
-第四步：运行fuseki（进入apache-jena-fuseki-3.5.0子目录，windows运行fuseki-server.bat）
+第四步：运行fuseki（进入apache-jena-fuseki-4.2.0子目录，windows运行fuseki-server.bat）
 
 ```shell script
 ./fuseki-server
@@ -77,7 +77,7 @@ streamlit run streamlit_app.py --server.enableCORS=true
 
 ## Data文件夹
 
-包含ER图模型文件和创建数据库、表，插入所有数据的sql文件。用户可以直接使用sql文件导入数据到mysql中。
+包含ER图模型文件和创建数据库、表，插入所有数据的sql文件。用户可以直接使用sql文件导入数据到MySQL中。
 
 ## kg\_demo_movie文件夹
 - crawler中的movie_crawler用于从The Movie DB下载数据，用户需要自己去网站注册账号，申请API KEY。在脚本中填入自己的API KEY，填写mysql相关参数即可运行。用户需要额外下载的包:requests和pymysql。tradition2simple用于将繁体字转为简体字（声明一下，我找不到该文件的出处了，我是从网上找到的解决方案，如果有用户知道该作者，麻烦告知，我会备注）。
@@ -96,7 +96,7 @@ streamlit run streamlit_app.py --server.enableCORS=true
 根据d2rq mapping language编辑的映射文件，将数据库中的数据映射到我们构建的本体上。
 
 ## kg\_demo_movie.nt
-利用d2rq，根据mapping文件，由Mysql数据库转换得到的RDF数据。
+利用d2rq，根据mapping文件，由MySQL数据库转换得到的RDF数据。
 
 ## fuseki_conf.ttl
 fuseki server配置文件，指定推理引擎，本体文件路径，规则文件路径，TDB路径等
