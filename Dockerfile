@@ -7,19 +7,20 @@ RUN apt-get update
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa -y
 RUN apt-get update
-RUN apt-get -y install python3.6
-RUN apt-get -y install python3.6-dev
+RUN apt-get -y install python3.9
+RUN apt-get -y install python3.9-dev
+RUN apt-get -y install python3-distutils
 RUN apt-get -y install default-jdk
 
 COPY . /kbqa
 WORKDIR /kbqa
 RUN ls -la /kbqa/*
 
-RUN /usr/bin/python3.6 get-pip.py
+RUN /usr/bin/python3.9 get-pip.py
 # Setuptools >= 58 会报错，必须用 v57的 setuptools
-RUN /usr/local/bin/pip3.6 uninstall -y setuptools
-RUN /usr/local/bin/pip3.6 install setuptools==57.5.0
-RUN /usr/local/bin/pip3.6 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/ && rm -rf ~/.cache/pip
+RUN /usr/local/bin/pip3.9 uninstall -y setuptools
+RUN /usr/local/bin/pip3.9 install setuptools==57.5.0
+RUN /usr/local/bin/pip3.9 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/ && rm -rf ~/.cache/pip
 
 RUN /kbqa/jena/apache-jena-4.2.0/bin/tdbloader2 --loc="/kbqa/jena/tdb" "/kbqa/kg_demo_movie.nt"
 
