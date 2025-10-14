@@ -1,11 +1,9 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list
 RUN apt-get update
 
-RUN apt-get -y install python-software-properties
 RUN apt-get -y install software-properties-common
-RUN add-apt-repository ppa:deadsnakes/ppa -y
 RUN apt-get update
 RUN apt-get -y install python3.6
 RUN apt-get -y install python3.6-dev
