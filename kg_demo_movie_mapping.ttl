@@ -79,6 +79,16 @@ map:person a d2rq:ClassMap;
 	d2rq:class :Person;
 	d2rq:classDefinitionLabel "person";
 	.
+	
+# Adding Comedian class mapping
+map:comedian a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "person/@@person.person_id@@";
+	d2rq:class :Comedian;
+	d2rq:condition "person.person_id IN (SELECT person_id FROM person WHERE occupation LIKE \"%喜剧%\")";
+	d2rq:classDefinitionLabel "comedian";
+	.
+	
 map:person_person_birth_day a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:person;
 	d2rq:property :personBirthDay;
@@ -124,4 +134,3 @@ map:person_to_movie__link a d2rq:PropertyBridge;
 	d2rq:join "person_to_movie.movie_id => movie.movie_id";
 	d2rq:join "person_to_movie.person_id => person.person_id";
 	.
-
